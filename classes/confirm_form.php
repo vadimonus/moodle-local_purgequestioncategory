@@ -51,8 +51,6 @@ class local_purgequestioncategory_confirm_form extends moodleform {
         $message = $OUTPUT->box(get_string('categorymove', 'question', $data), 'generalbox boxaligncenter');
         $mform->addElement('html', $message);
 
-        $mform->addElement('hidden', 'sesskey', sesskey());
-        $mform->setType('sesskey', PARAM_RAW);
 
         $mform->addElement('hidden', 'purge', $category->id);
         $mform->setType('purge', PARAM_INT);
