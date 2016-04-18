@@ -77,6 +77,7 @@ function local_purgequestioncategory_extend_settings_navigation(navigation_node 
         return;
     }
     $parentnode = $nav->get('modulesettings');
+    $questionbank = null;
     foreach ($parentnode->children as $node) {
         if ($node->text == get_string('questionbank', 'question')) {
             $questionbank = $node;
