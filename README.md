@@ -3,7 +3,7 @@ Purge question category Moodle plugin
 
 Requirements
 ------------
-- Moodle 3.0 (build 2015051100) or later.
+- Moodle 3.0 (build 2015111600) or later.
 
 Installation
 ------------
