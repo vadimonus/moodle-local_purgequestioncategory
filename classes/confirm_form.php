@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->libdir . '/formslib.php');
 
 /**
@@ -50,7 +52,6 @@ class local_purgequestioncategory_confirm_form extends moodleform {
         $data->count = $category->questionscount;
         $message = $OUTPUT->box(get_string('categorymove', 'question', $data), 'generalbox boxaligncenter');
         $mform->addElement('html', $message);
-
 
         $mform->addElement('hidden', 'purge', $category->id);
         $mform->setType('purge', PARAM_INT);
