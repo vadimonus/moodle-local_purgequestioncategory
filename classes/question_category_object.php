@@ -87,7 +87,9 @@ class local_purgequestioncategory_question_category_object extends question_cate
             }
         }
 
-        echo $list->display_page_numbers();
+        if (!empty($list)) {
+            echo $list->display_page_numbers();
+        }
     }
 
     /**
