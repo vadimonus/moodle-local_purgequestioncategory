@@ -31,6 +31,7 @@ $categoryid = required_param('purge', PARAM_INT);
 
 $category = $DB->get_record('question_categories', array('id' => $categoryid), '*', MUST_EXIST);
 $context = context::instance_by_id($category->contextid);
+require_capability('local/purgequestioncategory:purgecategory', $context);
 
 if ($context->contextlevel == CONTEXT_COURSE) {
     $course = get_course($context->instanceid);

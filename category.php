@@ -25,6 +25,8 @@
 require_once("../../config.php");
 require_once("$CFG->dirroot/question/editlib.php");
 
+require_login();
+
 list($thispageurl, $contexts, $cmid, $cm, $module, $pagevars) = question_edit_setup('categories',
         '/local/purgequestioncategory/category.php');
 
