@@ -49,19 +49,28 @@ class local_purgequestioncategory_confirm_form extends moodleform {
 
         $data = new stdClass();
         $data->name = $category->name;
-        $data->count = $category->questionscount;
-        $message = $OUTPUT->box(get_string('categorymove', 'question', $data), 'generalbox boxaligncenter');
+        $data->subcategories = $category->subcategories;
+        $data->usedquestions = $category->usedquestions;
+        $data->unusedquestions = $category->unusedquestions;
+        if ($category->usedquestions != 0) {
+            $message = get_string('infowithmove', 'local_purgequestioncategory', $data);
+        } else {
+            $message = get_string('infowithoutmove', 'local_purgequestioncategory', $data);
+        }
+        $message = $OUTPUT->box($message, 'generalbox boxaligncenter');
         $mform->addElement('html', $message);
 
         $mform->addElement('hidden', 'purge', $category->id);
         $mform->setType('purge', PARAM_INT);
 
-        $options = array();
-        $options['contexts'] = array(context::instance_by_id($category->contextid));
-        $options['top'] = true;
-        $options['nochildrenof'] = "$category->id,$category->contextid";
+        if ($category->usedquestions != 0) {
+            $options = array();
+            $options['contexts'] = array(context::instance_by_id($category->contextid));
+            $options['top'] = true;
+            $options['nochildrenof'] = "$category->id,$category->contextid";
 
-        $qcategory = $mform->addElement('questioncategory', 'newcategory', get_string('category', 'question'), $options);
+            $qcategory = $mform->addElement('questioncategory', 'newcategory', get_string('category', 'question'), $options);
+        }
 
         $message = $OUTPUT->box(get_string('confirmmessage', 'local_purgequestioncategory', $data), 'generalbox boxaligncenter');
         $mform->addElement('html', $message);
@@ -83,9 +92,11 @@ class local_purgequestioncategory_confirm_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         $category = $this->_customdata['category'];
-        $top = "0,$category->contextid";
-        if ($data['newcategory'] == $top) {
-            $errors['newcategory'] = get_string('validationcategory', 'local_purgequestioncategory');
+        if ($category->usedquestions != 0) {
+            $top = "0,$category->contextid";
+            if ($data['newcategory'] == $top) {
+                $errors['newcategory'] = get_string('validationcategory', 'local_purgequestioncategory');
+            }
         }
         if (!isset($data['confirm']) || $data['confirm'] != 1) {
             $errors['confirm'] = get_string('validationconfirm', 'local_purgequestioncategory');;

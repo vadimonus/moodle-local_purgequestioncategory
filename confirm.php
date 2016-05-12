@@ -53,7 +53,10 @@ $PAGE->set_heading($COURSE->fullname);
 
 $qcobject = new local_purgequestioncategory_question_category_object(0, $url, array(), 0, $categoryid, 0, array());
 
-$category->questionscount = $qcobject->get_questions_count($category->id);
+$category->subcategories = $qcobject->get_subcategories_count($category->id);
+$category->totalquestions = $qcobject->get_questions_count($category->id);
+$category->usedquestions = $qcobject->get_used_questions_count($category->id);
+$category->unusedquestions = $category->totalquestions - $category->usedquestions;
 
 $url = new moodle_url('/local/purgequestioncategory/confirm.php');
 $mform = new local_purgequestioncategory_confirm_form($url, array('category' => $category));
@@ -63,8 +66,12 @@ if ($mform->is_cancelled()) {
 } else if ($data = $mform->get_data()) {
     require_sesskey();
     if (isset($data->confirm)) {
-        $categoryparts = explode(',', $data->newcategory);
-        $qcobject->purge_category($category->id, $categoryparts[0]);
+        if ($category->usedquestions != 0) {
+            $categoryparts = explode(',', $data->newcategory);
+            $qcobject->move_and_purge_category($category->id, $categoryparts[0]);
+        } else {
+            $qcobject->purge_category($category->id);
+        }
     }
     redirect(new moodle_url('/local/purgequestioncategory/category.php', $pageparams));
 }

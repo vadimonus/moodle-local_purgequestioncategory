@@ -104,7 +104,7 @@ class local_purgequestioncategory_question_category_object extends question_cate
         $subcategories = $DB->get_records('question_categories', array('parent' => $categoryid), 'id');
         $count = count($subcategories);
         foreach ($subcategories as $subcategory) {
-            $count += self::get_subcategories_count($subcategory->id);
+            $count += $this->get_subcategories_count($subcategory->id);
         }
         return $count;
     }
@@ -121,22 +121,45 @@ class local_purgequestioncategory_question_category_object extends question_cate
         $count = $DB->count_records('question', array('category' => $categoryid));
         $subcategories = $DB->get_records('question_categories', array('parent' => $categoryid), 'id');
         foreach ($subcategories as $subcategory) {
-            $count += self::get_questions_count($subcategory->id);
+            $count += $this->get_questions_count($subcategory->id);
         }
         return $count;
     }
 
     /**
-     * Removes category and all questions and subcategories
+     * Returns used question count in category and all subcategories.
+     *
+     * @param int $categoryid id of category
+     * @return int questions count
+     */
+    public function get_used_questions_count($categoryid) {
+        global $DB;
+
+        $count = 0;
+        $questions = $DB->get_records('question', array('category' => $categoryid), '', 'id');
+        foreach ($questions as $question) {
+            if (questions_in_use(array($question->id))) {
+                $count++;
+            }
+        }
+        $subcategories = $DB->get_records('question_categories', array('parent' => $categoryid), 'id');
+        foreach ($subcategories as $subcategory) {
+            $count += $this->get_used_questions_count($subcategory->id);
+        }
+        return $count;
+    }
+
+    /**
+     * Moves used questions to new category. Removes category and all subcategories and all unused questions.
      *
      * @param int $oldcat id of category to delete
      * @param int $newcat id of category to move unused question.
      */
-    public function purge_category($oldcat, $newcat) {
+    public function move_and_purge_category($oldcat, $newcat) {
         global $DB;
         $subcategories = $DB->get_records('question_categories', array('parent' => $oldcat), 'id');
         foreach ($subcategories as $subcategory) {
-            $this->purge_category($subcategory->id, $newcat);
+            $this->move_and_purge_category($subcategory->id, $newcat);
         }
         // Trying to remove all unused question.
         $questions = $DB->get_records('question', array('category' => $oldcat), 'id');
@@ -151,6 +174,32 @@ class local_purgequestioncategory_question_category_object extends question_cate
         if ($DB->record_exists('question', array('category' => $oldcat), 'id')) {
             $this->move_questions_and_delete_category($oldcat, $newcat);
         } else {
+            $this->delete_category($oldcat);
+        }
+    }
+
+    /**
+     * Removes category and all questions and subcategories
+     *
+     * @param int $oldcat id of category to delete
+     */
+    public function purge_category($oldcat) {
+        global $DB;
+        $subcategories = $DB->get_records('question_categories', array('parent' => $oldcat), 'id');
+        foreach ($subcategories as $subcategory) {
+            $this->purge_category($subcategory->id);
+        }
+        // Trying to remove all unused question.
+        $questions = $DB->get_records('question', array('category' => $oldcat), 'id');
+        foreach ($questions as $question) {
+            if (questions_in_use(array($question->id))) {
+                $DB->set_field('question', 'hidden', 1, array('id' => $question->id));
+            } else {
+                question_delete_question($question->id);
+            }
+        }
+        // Delete category, if no questions.
+        if (!$DB->record_exists('question', array('category' => $oldcat), 'id')) {
             $this->delete_category($oldcat);
         }
     }
