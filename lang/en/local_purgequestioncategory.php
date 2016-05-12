@@ -24,7 +24,7 @@
 
 $string['confirmmessage'] = 'You are going to purge question category. If you proceed, this category and all it\'s subcategories and unused questions will be permanently deleted. This action cannot be undone!';
 $string['confirmpurge'] = 'Confirm question category purge';
-$string['iconfirm'] = 'I confirm, that I unerstand what I am doing';
+$string['iconfirm'] = 'I confirm, that I understand what I am doing';
 $string['pluginname'] = 'Purge question categories';
 $string['purgecategories'] = 'Purge categories';
 $string['purgequestioncategory:purgecategory'] = 'Delete question category with all qustions and subcategories';
