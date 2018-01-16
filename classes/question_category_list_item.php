@@ -66,11 +66,9 @@ class local_purgequestioncategory_question_category_list_item extends question_c
         if (!question_is_only_toplevel_category_in_context($category->id)) {
             $params = array('purge' => $this->id);
             $purgeurl = new moodle_url('/local/purgequestioncategory/confirm.php', $params);
-            $src = $OUTPUT->pix_url('purge', 'local_purgequestioncategory');
-            $img = html_writer::img($src, get_string('purgethiscategory', 'local_purgequestioncategory'),
-                            array('class' => 'iconsmall'));
-            $item .= html_writer::link($purgeurl, $img,
-                            array('title' => get_string('purgethiscategory', 'local_purgequestioncategory')));
+            $text = get_string('purgethiscategory', 'local_purgequestioncategory');
+            $icon = new pix_icon('purge', $text, 'local_purgequestioncategory');
+            $item .= $OUTPUT->action_link($purgeurl, '', null, array(), $icon);
         }
 
         return $item;

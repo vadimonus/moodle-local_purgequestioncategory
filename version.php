@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_purgequestioncategory';
-$plugin->version   = 2016051300;
-$plugin->release = '1.1';
+$plugin->version   = 2018011100;
+$plugin->release = '1.2';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires  = 2015111600; // Moodle 3.0.
