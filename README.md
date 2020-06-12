@@ -40,4 +40,3 @@ Changes
     - Question bank tabs.
     - Fix error message after deleting questions in category and system contexts. 
     - Fix error after deprecating of question_is_only_toplevel_category_in_context.
-    - Fix message about deprecating of pix_url.
