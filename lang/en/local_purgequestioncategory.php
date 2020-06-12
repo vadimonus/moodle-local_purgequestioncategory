@@ -28,11 +28,9 @@ $string['iconfirm'] = 'I confirm, that I understand what I am doing';
 $string['infowithmove'] = 'The category \'{$a->name}\' contains {$a->subcategories} subcategories, {$a->unusedquestions} unused questions and {$a->usedquestions} questions, that cannot be deleted (questions that are still in use in some existing quizzes). Please choose another category to move undeletable questions to.';
 $string['infowithoutmove'] = 'The category \'{$a->name}\' contains {$a->subcategories} subcategories and {$a->unusedquestions} unused questions.';
 $string['pluginname'] = 'Purge question categories';
+$string['privacy:metadata'] = 'The plugin does not store any personal data.';
 $string['purgecategories'] = 'Purge categories';
 $string['purgequestioncategory:purgecategory'] = 'Delete question category with all qustions and subcategories';
 $string['purgethiscategory'] = 'Purge this category';
 $string['validationcategory'] = 'Please select valid category';
 $string['validationconfirm'] = 'You have to confirm this action';
-
-
-
