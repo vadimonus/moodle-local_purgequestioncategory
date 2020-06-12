@@ -62,6 +62,10 @@ class local_purgequestioncategory_confirm_form extends moodleform {
 
         $mform->addElement('hidden', 'purge', $category->id);
         $mform->setType('purge', PARAM_INT);
+        $mform->addElement('hidden', 'cmid', optional_param('cmid', null, PARAM_INT));
+        $mform->setType('cmid', PARAM_INT);
+        $mform->addElement('hidden', 'courseid', optional_param('courseid', null, PARAM_INT));
+        $mform->setType('courseid', PARAM_INT);
 
         if ($category->usedquestions != 0) {
             $options = array();

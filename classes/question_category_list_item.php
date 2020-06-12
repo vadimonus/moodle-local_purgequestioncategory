@@ -63,8 +63,18 @@ class local_purgequestioncategory_question_category_list_item extends question_c
                 array('context' => $this->parentlist->context, 'noclean' => true));
 
         // Don't allow delete if this is the last category in this context.
-        if (!question_is_only_toplevel_category_in_context($category->id)) {
-            $params = array('purge' => $this->id);
+        if ($CFG->version < 2018051700.00) { // Moodle 3.5
+            $showpurgebutton = !question_is_only_toplevel_category_in_context($category->id);
+        } else {
+            $showpurgebutton = !question_is_only_child_of_top_category_in_context($category->id);
+        }
+        if ($showpurgebutton) {
+            $params = array();
+            $params['purge'] = $this->id;
+            $params['cmid'] = optional_param('cmid', null, PARAM_INT);
+            $params['courseid'] = optional_param('courseid', null, PARAM_INT);
+            $params = array_filter($params);
+
             $purgeurl = new moodle_url('/local/purgequestioncategory/confirm.php', $params);
             $text = get_string('purgethiscategory', 'local_purgequestioncategory');
             $icon = new pix_icon('purge', $text, 'local_purgequestioncategory');

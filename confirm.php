@@ -33,17 +33,21 @@ $category = $DB->get_record('question_categories', array('id' => $categoryid), '
 $context = context::instance_by_id($category->contextid);
 require_capability('local/purgequestioncategory:purgecategory', $context);
 
-if ($context->contextlevel == CONTEXT_COURSE) {
-    $course = get_course($context->instanceid);
-    $PAGE->set_course($course);
-    $pageparams = array('courseid' => $context->instanceid);
-} else if ($context->contextlevel == CONTEXT_MODULE) {
-    list($module, $cm) = get_module_from_cmid($context->instanceid);
+$pageparams = array();
+$pageparams['cmid'] = optional_param('cmid', null, PARAM_INT);
+$pageparams['courseid'] = optional_param('courseid', null, PARAM_INT);
+
+if ($pageparams['cmid']) {
+    list($module, $cm) = get_module_from_cmid($pageparams['cmid']);
     $PAGE->set_cm($cm);
-    $pageparams = array('cmid' => $context->instanceid);
+} else if ($pageparams['courseid']) {
+    $course = get_course($pageparams['courseid']);
+    $PAGE->set_course($course);
 } else {
-    $pageparams = array();
+    $PAGE->set_context($context);
 }
+
+$pageparams = array_filter($pageparams);
 
 $PAGE->set_pagelayout('admin');
 $url = new moodle_url('/local/purgequestioncategory/category.php', $pageparams);
