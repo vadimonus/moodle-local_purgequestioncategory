@@ -37,6 +37,13 @@ $PAGE->set_title(get_string('purgecategories', 'local_purgequestioncategory'));
 $PAGE->set_heading($COURSE->fullname);
 
 echo $OUTPUT->header();
+
+if ($CFG->version >= 2016120503.00) { // Moodle 3.2.3
+    // Print horizontal nav if needed.
+    $renderer = $PAGE->get_renderer('core_question', 'bank');
+    echo $renderer->extra_horizontal_navigation();
+}
+
 $qcobject = new local_purgequestioncategory_question_category_object($pagevars['cpage'], $thispageurl,
         $contexts->having_cap('local/purgequestioncategory:purgecategory'), 0, $pagevars['cat'], 0, array());
 $qcobject->output_edit_lists();
