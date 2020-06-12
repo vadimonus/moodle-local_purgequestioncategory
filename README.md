@@ -27,14 +27,17 @@ Links
 
 Changes
 -------
-Release 0.9 (build 2016041500):
-- Initial release.
-
-Release 1.0 (build 2016051000):
-- Adding some capability checks.
-
-Release 1.1 (build 2016051300):
-- No need to select new category if no used questions present.
-
-Release 1.2 (build 2018011100):
-- Support for 3.3 and higher (replaced usage of deprecated $OUTPUT->pix_url).
+- Release 0.9 (build 2016041500):
+    - Initial release.
+- Release 1.0 (build 2016051000):
+    - Adding some capability checks.
+- Release 1.1 (build 2016051300):
+    - No need to select new category if no used questions present.
+- Release 1.2 (build 2018011100):
+    - Support for 3.3 and higher (replaced usage of deprecated $OUTPUT->pix_url).
+- Release 1.3 (build 2020061200):
+    - Privacy API support.
+    - Question bank tabs.
+    - Fix error message after deleting questions in category and system contexts. 
+    - Fix error after deprecating of question_is_only_toplevel_category_in_context.
+    - Fix message about deprecating of pix_url.
