@@ -78,6 +78,7 @@ class local_purgequestioncategory_question_category_list_item extends question_c
             $purgeurl = new moodle_url('/local/purgequestioncategory/confirm.php', $params);
             $text = get_string('purgethiscategory', 'local_purgequestioncategory');
             $icon = new pix_icon('purge', $text, 'local_purgequestioncategory');
+            $item .= '&nbsp;';
             $item .= $OUTPUT->action_link($purgeurl, '', null, array(), $icon);
         }
 
