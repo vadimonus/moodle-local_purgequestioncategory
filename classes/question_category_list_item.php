@@ -63,7 +63,7 @@ class local_purgequestioncategory_question_category_list_item extends question_c
                 array('context' => $this->parentlist->context, 'noclean' => true));
 
         // Don't allow delete if this is the last category in this context.
-        if ($CFG->version < 2018051700.00) { // Moodle 3.5
+        if ($CFG->version < 2018051700.00) { // Moodle 3.5.
             $showpurgebutton = !question_is_only_toplevel_category_in_context($category->id);
         } else {
             $showpurgebutton = !question_is_only_child_of_top_category_in_context($category->id);
